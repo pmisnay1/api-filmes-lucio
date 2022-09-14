@@ -1,5 +1,5 @@
 const express = require('express');
-const res = require('express/lib/response');
+const res = ('express/lib/response');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,18 +9,19 @@ app.use(express.urlencoded({extended: false}));
 
 let movies = [
     {
-        id: "1",
-        titulo: "Inception",
-        diretor: "Christopher Nolan",
-        lancamento: "16/07/2010",
+        id:"1",
+        titulo:"Inception",
+        diretor:"Christopher Nolan",
+        lancamento:"16/07/2010"
     },
     {
-        id: "2",
-        titulo: "The Irishman",
-        diretor: "Martin Scorsese",
-        lancamento: "27/09/2019",
-    },
-];
+        id:"2",
+        titulo:"The Irishman",
+        diretor:"Martin Scorsese",
+        lancamento: "27/09/2019" 
+    }
+]
+
 
 app.get("/movie", (req, res) => {
     res.json(movies);
@@ -34,6 +35,24 @@ app.post('/movie', (req, res) => {
     res.send('Filme adicionado a lista!');
 });
 
+app.put('/movie/:id', (req, res) => {
+    const newMovie = req.body
+    const id = req.params.id
+
+    for (let movie of movies) {
+        if(movie.id === id) {
+            movie.titulo = newMovie.titulo
+            movie.diretor = newMovie.diretor
+            movie.lancamento = newMovie.lancamento
+            res.json(movie)
+            return
+        }
+    }
+
+    res.send('Filme atualizado!');
+});
+
+
 app.get('/movie/:id', (req,res) => {
     const id = req.params.id
 
@@ -46,6 +65,7 @@ app.get('/movie/:id', (req,res) => {
     res.status(404).send('movie not found!')
 })
 
+
 app.delete('/movie/:id', (req,res) => {
     const id = req.params.id
 
@@ -55,7 +75,7 @@ app.delete('/movie/:id', (req,res) => {
         }
         return false;
     });
-    res.send("FIlme foi apagado!");
+    res.send("Filme foi apagado!");
 });
 
 app.listen(port, () => console.log(`Servidor iniciado na porta ${port}`));
